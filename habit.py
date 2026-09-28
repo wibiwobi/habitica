@@ -156,6 +156,7 @@ from rich import print
 import time
 import sys
 from rich.prompt import Prompt
+import calendar
 
 # TODO: ADD A FEATURE THAT ASKS HOW MANY HABITS TO ADD
 def add_habit(habit_records):
@@ -185,7 +186,7 @@ def add_habit(habit_records):
 def log_habit(habit_records, bright_colors): 
     import random
     from datetime import datetime
-    import calendar
+    
 
     print("[bold red]█   █  ███  ████  ███ █████ ███  ███   ███[/bold red]")  
     print("[bold red]█   █ █   █ █   █  █    █    █  █     █   █[/bold red]") 
@@ -292,7 +293,76 @@ def log_habit(habit_records, bright_colors):
 
 
 def output_one_habit_streak():
-    pass 
+    months = {1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December"}
+
+    days = {1: "Su", 2: "Mo", 3: "Tu", 4: "We", 5: "Th", 6: "Fr", 7: "Sa"}
+
+    month = 1
+    cal = calendar.Calendar(firstweekday=6)
+
+    for i in range(4):
+        print(f"{months[month]:^20}{months[month + 1]:^30}{months[month+2]:^20}")
+        
+
+        for i in range(3):
+            print(f"{days[1]:^3}{days[2]:^3}{days[3]:^3}{days[4]:^3}{days[5]:^3}{days[6]:^3}{days[7]:^3}", end=f"{"":<4}")
+
+        print()
+
+        month1 = cal.monthdayscalendar(2026, month)
+        month2 = cal.monthdayscalendar(2026, month + 1)
+        month3 = cal.monthdayscalendar(2026, month + 2)
+
+
+            
+        for j in range(6):
+
+
+
+            
+            for k in range(7): # month1
+                try:
+                    if month1[j][k] != 0:
+                        print(f"{month1[j][k]:^3}", end="")
+                    else:
+                        print(f"{" ":^3}", end="")
+                except:
+                    print(f"{" ":^3}", end="")
+
+
+            print(end="    ")
+
+            for l in range(7): # month 2
+                try:
+                    if month2[j][l] != 0:
+                        print(f"{month2[j][l]:^3}", end="")
+                    else:
+                        print(f"{" ":^3}", end="")
+                except:
+                        print(f"{" ":^3}", end="")
+
+            print(end="    ")
+
+            for m in range(7): # month 3
+                try:
+                    if month3[j][m] != 0:
+                        print(f"{month3[j][m]:^3}", end="")
+                    else:
+                        print(f"{" ":^3}", end="")
+                except:
+                        print(f"{" ":^3}", end="")
+
+            print()
+
+
+        month += 3
+        print("\n\n")
+
+
+
+
+        
+
 
 def output_all_habit_streak():
     pass 
