@@ -157,6 +157,7 @@ import time
 import sys
 from rich.prompt import Prompt
 import calendar
+import random
 
 # TODO: ADD A FEATURE THAT ASKS HOW MANY HABITS TO ADD
 def add_habit(habit_records):
@@ -184,7 +185,6 @@ def add_habit(habit_records):
 
 
 def log_habit(habit_records, bright_colors): 
-    import random
     from datetime import datetime
     
 
@@ -292,18 +292,51 @@ def log_habit(habit_records, bright_colors):
     
 
 
-def output_one_habit_streak():
+def output_one_habit_streak(habit_records, bright_colors):
+    print(habit_records)
+    print("\033[42;30mHighlighted Text\033[0m")
+
+    print("[bold red]█   █  ███  ████  ███ █████ ███  ███   ███[/bold red]")  
+    print("[bold red]█   █ █   █ █   █  █    █    █  █     █   █[/bold red]") 
+    print("[bold red]█████ █████ ████   █    █    █  █     █████[/bold red]") 
+    print("[bold red]█   █ █   █ █   █  █    █    █  █     █   █[/bold red]") 
+    print("[bold red]█   █ █   █ ████  ███   █   ███  ███  █   █[/bold red]\n")
+
+    # display all the habits
+    print("[bold bright_blue]Habit(s):[/bold bright_blue]")
+    key_habit_records_list = []
+    for i, habit in enumerate(habit_records):
+        key_habit_records_list.append(habit)
+        bright_color = random.choice(bright_colors)
+        print(f"[{bright_color}][{i}] {habit}[/{bright_color}]")
+
+    print()
+
+    # ask what habit 
+    while True:
+        try:
+            decision_number = int(Prompt.ask(f"[light_cyan1 bold]Pick a habit streak to display from [0 - {len(key_habit_records_list) - 1}] [/light_cyan1 bold]"))
+            if decision_number < 0 or decision_number > len(key_habit_records_list) - 1:
+                raise ValueError(f"decision_number is not valid, it should range only from 0 - {len(key_habit_records_list) - 1}")
+            else:
+                delete_lines(3 + len(key_habit_records_list))
+                break
+        except:
+            print(f"Input should be an [bold red]integer[/bold red] and [bold red]ranges from 0 to {len(key_habit_records_list) - 1}![/bold red]")
+            time.sleep(2)
+            delete_lines(2)
+
+    habit_key = key_habit_records_list[decision_number]
+
+    
+
     months = {1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December"}
-
     days = {1: "Su", 2: "Mo", 3: "Tu", 4: "We", 5: "Th", 6: "Fr", 7: "Sa"}
-
     month = 1
     cal = calendar.Calendar(firstweekday=6)
 
     for i in range(4):
         print(f"{months[month]:^20}{months[month + 1]:^30}{months[month+2]:^20}")
-        
-
         for i in range(3):
             print(f"{days[1]:^3}{days[2]:^3}{days[3]:^3}{days[4]:^3}{days[5]:^3}{days[6]:^3}{days[7]:^3}", end=f"{"":<4}")
 
@@ -316,14 +349,14 @@ def output_one_habit_streak():
 
             
         for j in range(6):
-
-
-
-            
             for k in range(7): # month1
                 try:
                     if month1[j][k] != 0:
-                        print(f"{month1[j][k]:^3}", end="")
+                        if month in habit_records[habit_key] and month1[j][k] in habit_records[habit_key][month]:
+                            print(f"[black on white]{month1[j][k]:^3}[/black on white]", end="")
+
+                        else:
+                            print(f"{month1[j][k]:^3}", end="")
                     else:
                         print(f"{" ":^3}", end="")
                 except:
@@ -358,10 +391,13 @@ def output_one_habit_streak():
         month += 3
         print("\n\n")
 
+    input()
+
+    delete_lines(46)
 
 
 
-        
+
 
 
 def output_all_habit_streak():
@@ -400,7 +436,7 @@ def main_flow():
     "violet",
     "medium_orchid1",
     ]
-    habit_records = {}
+    habit_records = {"meditating": {1: {4, 5, 6, 29, 28, 27, 26, 25, 23, 22, 21, 19, 12, 11, 10, 9, 6}}}
 
 
     while True:
@@ -415,6 +451,7 @@ def main_flow():
         print("[bold yellow][1][/bold yellow] [bold bright_white]Log a habit[/bold bright_white]")
         print("[bold cyan][2][/bold cyan] [bold bright_white]See streak of a specific habit[/bold bright_white]")
         print("[bold magenta][3][/bold magenta] [bold bright_white]See all habit streak[/bold bright_white]\n")
+        print("\033[42;30m Hello World! \033[0m")
 
         while True:
             try:
@@ -434,7 +471,7 @@ def main_flow():
         elif decision_number == 1:
             log_habit(habit_records, bright_colors)
         elif decision_number == 2:
-            output_one_habit_streak(habit_records)
+            output_one_habit_streak(habit_records, bright_colors)
         elif decision_number == 3:
             output_all_habit_streak(habit_records)    
 
