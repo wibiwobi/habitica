@@ -293,9 +293,6 @@ def log_habit(habit_records, bright_colors):
 
 
 def output_one_habit_streak(habit_records, bright_colors):
-    print(habit_records)
-    print("\033[42;30mHighlighted Text\033[0m")
-
     print("[bold red]█   █  ███  ████  ███ █████ ███  ███   ███[/bold red]")  
     print("[bold red]█   █ █   █ █   █  █    █    █  █     █   █[/bold red]") 
     print("[bold red]█████ █████ ████   █    █    █  █     █████[/bold red]") 
@@ -368,7 +365,10 @@ def output_one_habit_streak(habit_records, bright_colors):
             for l in range(7): # month 2
                 try:
                     if month2[j][l] != 0:
-                        print(f"{month2[j][l]:^3}", end="")
+                        if month + 1 in habit_records[habit_key] and month2[j][l] in habit_records[habit_key][month + 1]:
+                            print(f"[black on white]{month2[j][l]:^3}[/black on white]", end="")
+                        else:
+                            print(f"{month2[j][l]:^3}", end="")
                     else:
                         print(f"{" ":^3}", end="")
                 except:
@@ -379,10 +379,13 @@ def output_one_habit_streak(habit_records, bright_colors):
             for m in range(7): # month 3
                 try:
                     if month3[j][m] != 0:
-                        print(f"{month3[j][m]:^3}", end="")
+                        if month + 2 in habit_records[habit_key] and month3[j][m] in habit_records[habit_key][month + 2]:
+                            print(f"[black on white]{month3[j][m]:^3}[/black on white]", end="")
+                        else:
+                            print(f"{month3[j][m]:^3}", end="")
                     else:
                         print(f"{" ":^3}", end="")
-                except:
+                except Exception:
                         print(f"{" ":^3}", end="")
 
             print()
@@ -436,7 +439,7 @@ def main_flow():
     "violet",
     "medium_orchid1",
     ]
-    habit_records = {"meditating": {1: {4, 5, 6, 29, 28, 27, 26, 25, 23, 22, 21, 19, 12, 11, 10, 9, 6}}}
+    habit_records = {"meditating": {9: {4, 5, 6, 29, 28, 27, 26, 25, 23, 22, 21, 19, 12, 11, 10, 9, 6}}}
 
 
     while True:
@@ -451,7 +454,6 @@ def main_flow():
         print("[bold yellow][1][/bold yellow] [bold bright_white]Log a habit[/bold bright_white]")
         print("[bold cyan][2][/bold cyan] [bold bright_white]See streak of a specific habit[/bold bright_white]")
         print("[bold magenta][3][/bold magenta] [bold bright_white]See all habit streak[/bold bright_white]\n")
-        print("\033[42;30m Hello World! \033[0m")
 
         while True:
             try:
