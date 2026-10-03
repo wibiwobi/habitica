@@ -152,6 +152,10 @@ Order to building it:
 - build the first flow, main and habit
 """
 
+# ! ADD A BACK FEATURE
+
+default_print = print
+
 from rich import print
 import time
 import sys
@@ -160,6 +164,8 @@ import calendar
 import random
 
 # TODO: ADD A FEATURE THAT ASKS HOW MANY HABITS TO ADD
+# TODO: ASK N HABITS
+
 def add_habit(habit_records):
     print("[bold red]█   █  ███  ████  ███ █████ ███  ███   ███[/bold red]")  
     print("[bold red]█   █ █   █ █   █  █    █    █  █     █   █[/bold red]") 
@@ -299,6 +305,8 @@ def output_one_habit_streak(habit_records, bright_colors):
     print("[bold red]█   █ █   █ █   █  █    █    █  █     █   █[/bold red]") 
     print("[bold red]█   █ █   █ ████  ███   █   ███  ███  █   █[/bold red]\n")
 
+    
+
     # display all the habits
     print("[bold bright_blue]Habit(s):[/bold bright_blue]")
     key_habit_records_list = []
@@ -332,6 +340,8 @@ def output_one_habit_streak(habit_records, bright_colors):
     month = 1
     cal = calendar.Calendar(firstweekday=6)
 
+    print(f"\n\n{"2026":^70}\n")
+
     for i in range(4):
         print(f"{months[month]:^20}{months[month + 1]:^30}{months[month+2]:^20}")
         for i in range(3):
@@ -357,7 +367,7 @@ def output_one_habit_streak(habit_records, bright_colors):
                     else:
                         print(f"{" ":^3}", end="")
                 except:
-                    print(f"{" ":^3}", end="")
+                    print(f"{"":^3}", end="")
 
 
             print(end="    ")
@@ -394,13 +404,10 @@ def output_one_habit_streak(habit_records, bright_colors):
         month += 3
         print("\n\n")
 
-    input()
+    input("Press enter to continue")
+    default_print("\033[2J]\033[3J]\033[H")
 
-    delete_lines(46)
-
-
-
-
+    return
 
 
 def output_all_habit_streak():
@@ -484,6 +491,11 @@ def main_flow():
             # add_habit decision_number -> passes dictionary date
 
 main_flow()
+
+
+
+
+# ! https://claude.ai/share/fbd82ae4-354c-4636-b4bc-e0b53b720fbd
 
 
 
