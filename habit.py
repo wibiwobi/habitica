@@ -340,7 +340,8 @@ def output_one_habit_streak(habit_records, bright_colors):
     month = 1
     cal = calendar.Calendar(firstweekday=6)
 
-    print(f"\n\n{"2026":^70}\n")
+    print(f"\n\n[bold hot_pink]{habit_key:^70}[/bold hot_pink]")
+    print(f"\n{"2026":^70}\n")
 
     for i in range(4):
         print(f"{months[month]:^20}{months[month + 1]:^30}{months[month+2]:^20}")
