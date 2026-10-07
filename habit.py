@@ -163,8 +163,8 @@ from rich.prompt import Prompt
 import calendar
 import random
 
-# TODO: ADD A FEATURE THAT ASKS HOW MANY HABITS TO ADD
-# TODO: ASK N HABITS
+# TODO: BACK FEATURE -> output_all_habits
+# TODO: DELETE HABITS function
 
 def add_habit(habit_records):
     print("[bold red]█   █  ███  ████  ███ █████ ███  ███   ███[/bold red]")  
@@ -176,29 +176,38 @@ def add_habit(habit_records):
         # ask what habit to add (only string, dont accept empty string)
         try:
             print("[magenta bold]ADD A HABIT TO TRACK IT LATER![/magenta bold]")
-            habit = str(Prompt.ask("[light_cyan1 bold]Habit [/light_cyan1 bold]"))
-            if habit == "": 
+            print("To exit the prompt type \"x\" without the double quotes")
+            print("\'To add more than one habit separate them by spaces\'\n")
+            habits = str(Prompt.ask("[light_cyan1 bold]Habit(s) [/light_cyan1 bold]")).split() # array man
+            if habits == "": 
                 raise Exception("Input is empty!") 
+
+            elif habits[0] == "x":
+                delete_lines(11)
+                break
+            
             else: # add the habit
-                habit_records[habit] = {}
-                delete_lines(8)
+                for habit in habits:
+                    habit_records[habit] = {}
+                delete_lines(11)
                 break
         except:
             print("Input is [magenta bold]EMPTY![/magenta bold]")
             time.sleep(2)
-            delete_lines(3)
+            delete_lines(6)
 
 
 
 def log_habit(habit_records, bright_colors): 
     from datetime import datetime
     
-
     print("[bold red]█   █  ███  ████  ███ █████ ███  ███   ███[/bold red]")  
     print("[bold red]█   █ █   █ █   █  █    █    █  █     █   █[/bold red]") 
     print("[bold red]█████ █████ ████   █    █    █  █     █████[/bold red]") 
     print("[bold red]█   █ █   █ █   █  █    █    █  █     █   █[/bold red]") 
-    print("[bold red]█   █ █   █ ████  ███   █   ███  ███  █   █[/bold red]\n")
+    print("[bold red]█   █ █   █ ████  ███   █   ███  ███  █   █[/bold red]\n\n")
+
+    print("type \'x\' if you want to exit\n")
 
     # display all the habits
     print("[bold bright_blue]Habit(s):[/bold bright_blue]")
@@ -213,7 +222,13 @@ def log_habit(habit_records, bright_colors):
     # ask what habit to log
     while True:
         try:
-            decision_number = int(Prompt.ask(f"[light_cyan1 bold]Pick a habit from [0 - {len(key_habit_records_list) - 1}] [/light_cyan1 bold]"))
+            decision_number = str(Prompt.ask(f"[light_cyan1 bold]Pick a habit from [0 - {len(key_habit_records_list) - 1}] [/light_cyan1 bold]"))
+            if decision_number == 'x': 
+                delete_lines(13)
+                return 
+            else:
+                decision_number = int(decision_number)
+
             if decision_number < 0 or decision_number > len(key_habit_records_list) - 1:
                 raise ValueError(f"decision_number is not valid, it should range only from 0 - {len(key_habit_records_list) - 1}")
             else:
@@ -228,13 +243,26 @@ def log_habit(habit_records, bright_colors):
     while True:
         try:
             date_decision = input("Manually input date [y/n]? ")
+
+            if date_decision == 'x': 
+                delete_lines(13)
+                return 
+
             delete_lines(1)
 
             if date_decision == 'y': # manual date (based from user inputs)
                 while True:
                     try:
                         # get the month
-                        month = int(input("Month [1 - 12]: "))
+                        month = input("Month [1 - 12]: ")
+
+                        if month == 'x': 
+                            delete_lines(13)
+                            return 
+                        else:
+                            month = int(month)
+
+
                         if month < 1 or month > 12:
                             raise ValueError("Invalid month input")
                         else:
@@ -251,7 +279,14 @@ def log_habit(habit_records, bright_colors):
                 while True:
                     try:
                         # get the nth day of the month
-                        day = int(input(f"Day [1 - {last_day_num}]: "))
+                        day = input(f"Day [1 - {last_day_num}]: ")
+
+                        if day == 'x': 
+                            delete_lines(13)
+                            return 
+                        else:
+                            day = int(day)
+
                         if day < 1 or day > last_day_num:
                             raise ValueError("Invalid day input")
                         else:
@@ -271,7 +306,7 @@ def log_habit(habit_records, bright_colors):
                     habit_records[habit][month] = {day}
 
 
-                delete_lines(8)
+                delete_lines(12)
                 break
 
                     
@@ -285,7 +320,7 @@ def log_habit(habit_records, bright_colors):
                 else:
                     habit_records[habit][present_month] = {present_day}
 
-                delete_lines(6)
+                delete_lines(10)
                 break
             else:
                 raise ValueError("date decision should be either a y/n")
@@ -320,7 +355,15 @@ def output_one_habit_streak(habit_records, bright_colors):
     # ask what habit 
     while True:
         try:
-            decision_number = int(Prompt.ask(f"[light_cyan1 bold]Pick a habit streak to display from [0 - {len(key_habit_records_list) - 1}] [/light_cyan1 bold]"))
+            decision_number = Prompt.ask(f"[light_cyan1 bold]Pick a habit streak to display from [0 - {len(key_habit_records_list) - 1}] [/light_cyan1 bold]")
+
+            if decision_number == "x":
+                delete_lines(13)
+                return 
+            else:
+                decision_number = int(decision_number)
+
+
             if decision_number < 0 or decision_number > len(key_habit_records_list) - 1:
                 raise ValueError(f"decision_number is not valid, it should range only from 0 - {len(key_habit_records_list) - 1}")
             else:
@@ -421,6 +464,52 @@ def delete_lines(n):
         for i in range(n):
             sys.stdout.write("\033[1A") # move cursor up
             sys.stdout.write("\x1b[2K") # delete line
+
+def delete_habit(habit_records, bright_colors):
+    print("[bold red]█   █  ███  ████  ███ █████ ███  ███   ███[/bold red]")  
+    print("[bold red]█   █ █   █ █   █  █    █    █  █     █   █[/bold red]") 
+    print("[bold red]█████ █████ ████   █    █    █  █     █████[/bold red]") 
+    print("[bold red]█   █ █   █ █   █  █    █    █  █     █   █[/bold red]") 
+    print("[bold red]█   █ █   █ ████  ███   █   ███  ███  █   █[/bold red]\n")
+
+    print("Delete a habit.\n\n")
+
+
+    # display the habits
+    print("[bold bright_blue]Habit(s):[/bold bright_blue]")
+    key_habit_records_list = []
+    for i, habit in enumerate(habit_records):
+        key_habit_records_list.append(habit)
+        bright_color = random.choice(bright_colors)
+        print(f"[{bright_color}][{i}] {habit}[/{bright_color}]")
+    
+    print()
+
+    # ask what habit to delete
+    while True:
+            try:
+                decision_number = str(Prompt.ask(f"[light_cyan1 bold]Pick a habit to [bold red]delete[/bold red] from [0 - {len(key_habit_records_list) - 1}] [/light_cyan1 bold]"))
+                if decision_number == 'x': 
+                    delete_lines(13)
+                    return 
+                else:
+                    decision_number = int(decision_number)
+    
+                if decision_number < 0 or decision_number > len(key_habit_records_list) - 1:
+                    raise ValueError(f"decision_number is not valid, it should range only from 0 - {len(key_habit_records_list) - 1}")
+                else:
+                    delete_lines(3 + len(key_habit_records_list))
+                    break
+            except:
+                print(f"Input should be an [bold red]integer[/bold red] and [bold red]ranges from 0 to {len(key_habit_records_list) - 1}![/bold red]")
+                time.sleep(2)
+                delete_lines(2)
+
+
+    # delete habit
+    del habit_records[key_habit_records_list[decision_number]]
+
+    delete_lines(9)
     
 # data
 def main_flow():
@@ -461,18 +550,19 @@ def main_flow():
         print("\n\n[bold green][0][/bold green] [bold bright_white]Add a habit[/bold bright_white]")
         print("[bold yellow][1][/bold yellow] [bold bright_white]Log a habit[/bold bright_white]")
         print("[bold cyan][2][/bold cyan] [bold bright_white]See streak of a specific habit[/bold bright_white]")
-        print("[bold magenta][3][/bold magenta] [bold bright_white]See all habit streak[/bold bright_white]\n")
+        print("[bold magenta][3][/bold magenta] [bold bright_white]See all habit streak[/bold bright_white]")
+        print("[bold yellow][4][/bold yellow] [bold bright_white]Delete a habit[/bold bright_white]\n")
 
         while True:
             try:
-                decision_number = int(Prompt.ask("[light_cyan1 bold]What do you want to do? [0 - 3] [/light_cyan1 bold]"))
-                if decision_number < 0 or decision_number > 3: # not a valid decision_number
+                decision_number = int(Prompt.ask("[light_cyan1 bold]What do you want to do? [0 - 4] [/light_cyan1 bold]"))
+                if decision_number < 0 or decision_number > 4: # not a valid decision_number
                     raise ValueError("decision_number is not valid, it should range only from 1 - 4")
                 else:
-                    delete_lines(13)
+                    delete_lines(14)
                     break
             except:
-                print("Input should be an [bold red]integer[/bold red] and [bold red]ranges from 0 to 3![/bold red]")
+                print("Input should be an [bold red]integer[/bold red] and [bold red]ranges from 0 to 4![/bold red]")
                 time.sleep(2)
                 delete_lines(2)
 
@@ -483,7 +573,9 @@ def main_flow():
         elif decision_number == 2:
             output_one_habit_streak(habit_records, bright_colors)
         elif decision_number == 3:
-            output_all_habit_streak(habit_records)    
+            output_all_habit_streak(habit_records)   
+        elif  decision_number == 4:
+            delete_habit(habit_records, bright_colors)
 
 
         # check if input is correct -> if it is asks again
