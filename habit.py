@@ -163,8 +163,16 @@ from rich.prompt import Prompt
 import calendar
 import random
 
+
+# TODO: prompt for log_habit, output_one and output_all habit streak and delete_habit if there are no habits in the dict 
+# TODO: output_all_habits
 # TODO: BACK FEATURE -> output_all_habits
-# TODO: DELETE HABITS function
+# TODO: Document
+# TODO: Refactor (DRY)
+
+# TODO: JSON FEATURE
+
+ 
 
 def add_habit(habit_records):
     print("[bold red]█   █  ███  ████  ███ █████ ███  ███   ███[/bold red]")  
@@ -206,6 +214,15 @@ def log_habit(habit_records, bright_colors):
     print("[bold red]█████ █████ ████   █    █    █  █     █████[/bold red]") 
     print("[bold red]█   █ █   █ █   █  █    █    █  █     █   █[/bold red]") 
     print("[bold red]█   █ █   █ ████  ███   █   ███  ███  █   █[/bold red]\n\n")
+
+    # check if there are habits to log
+    if not habit_records:
+        print("There are no habits to log...")
+        input("Press \'enter\' to continue..")
+        delete_lines(9)
+
+        return
+
 
     print("type \'x\' if you want to exit\n")
 
@@ -340,7 +357,14 @@ def output_one_habit_streak(habit_records, bright_colors):
     print("[bold red]█   █ █   █ █   █  █    █    █  █     █   █[/bold red]") 
     print("[bold red]█   █ █   █ ████  ███   █   ███  ███  █   █[/bold red]\n")
 
+
+    # check if there are habits to log
+    if not habit_records:
+        print("There are no habits to display...")
+        input("Press \'enter\' to continue..")
+        delete_lines(9)
     
+        return
 
     # display all the habits
     print("[bold bright_blue]Habit(s):[/bold bright_blue]")
@@ -472,8 +496,14 @@ def delete_habit(habit_records, bright_colors):
     print("[bold red]█   █ █   █ █   █  █    █    █  █     █   █[/bold red]") 
     print("[bold red]█   █ █   █ ████  ███   █   ███  ███  █   █[/bold red]\n")
 
-    print("Delete a habit.\n\n")
+    # check if there are habits to log
+    if not habit_records:
+        print("There are no habits to delete...")
+        input("Press \'enter\' to continue..")
+        delete_lines(9)
+        return
 
+    print("Delete a habit.\n\n")
 
     # display the habits
     print("[bold bright_blue]Habit(s):[/bold bright_blue]")
