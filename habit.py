@@ -163,16 +163,15 @@ from rich.prompt import Prompt
 import calendar
 import random
 
-
-# TODO: prompt for log_habit, output_one and output_all habit streak and delete_habit if there are no habits in the dict 
 # TODO: output_all_habits
+# TODO: prompt for output_all habit streak if there are no habits in the dict 
 # TODO: BACK FEATURE -> output_all_habits
+
 # TODO: Document
 # TODO: Refactor (DRY)
 
 # TODO: JSON FEATURE
 
- 
 
 def add_habit(habit_records):
     print("[bold red]█   █  ███  ████  ███ █████ ███  ███   ███[/bold red]")  
@@ -264,8 +263,6 @@ def log_habit(habit_records, bright_colors):
             if date_decision == 'x': 
                 delete_lines(13)
                 return 
-
-            delete_lines(1)
 
             if date_decision == 'y': # manual date (based from user inputs)
                 while True:
@@ -478,8 +475,102 @@ def output_one_habit_streak(habit_records, bright_colors):
     return
 
 
-def output_all_habit_streak():
-    pass 
+def output_all_habit_streak(habit_records):
+    print("[bold red]█   █  ███  ████  ███ █████ ███  ███   ███[/bold red]")  
+    print("[bold red]█   █ █   █ █   █  █    █    █  █     █   █[/bold red]") 
+    print("[bold red]█████ █████ ████   █    █    █  █     █████[/bold red]") 
+    print("[bold red]█   █ █   █ █   █  █    █    █  █     █   █[/bold red]") 
+    print("[bold red]█   █ █   █ ████  ███   █   ███  ███  █   █[/bold red]\n")
+
+
+    # check if there are habits to log
+    if not habit_records:
+        print("There are no habits to display...")
+        input("Press \'enter\' to continue..")
+        delete_lines(9)
+    
+        return
+
+    print(f"\n{"2026":^70}\n")
+
+
+    months = {1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December"}
+    days = {1: "Su", 2: "Mo", 3: "Tu", 4: "We", 5: "Th", 6: "Fr", 7: "Sa"}
+    month = 1
+    cal = calendar.Calendar(firstweekday=6)
+
+
+    # output all habits
+    for habit_key in habit_records:
+        print(f"\n\n[bold hot_pink]{habit_key:^70}[/bold hot_pink]")
+        for i in range(4):
+                # display months 1 to 3, 4 to 6 etc
+                print(f"{months[month]:^20}{months[month + 1]:^30}{months[month+2]:^20}")
+                # display Su Tu, We to Sa three times
+                for i in range(3):
+                    print(f"{days[1]:^3}{days[2]:^3}{days[3]:^3}{days[4]:^3}{days[5]:^3}{days[6]:^3}{days[7]:^3}", end=f"{"":<4}")
+        
+                print()
+
+                # matrix of all the dates for a specific month
+                month1 = cal.monthdayscalendar(2026, month)
+                month2 = cal.monthdayscalendar(2026, month + 1)
+                month3 = cal.monthdayscalendar(2026, month + 2)
+        
+                for j in range(6):
+
+                    for k in range(7): # month1
+                        try:
+                            if month1[j][k] != 0:
+                                if month in habit_records[habit_key] and month1[j][k] in habit_records[habit_key][month]:
+                                    print(f"[black on white]{month1[j][k]:^3}[/black on white]", end="")
+        
+                                else:
+                                    print(f"{month1[j][k]:^3}", end="")
+                            else:
+                                print(f"{" ":^3}", end="")
+                        except:
+                            print(f"{"":^3}", end="")
+        
+        
+                    print(end="    ")
+        
+                    for l in range(7): # month 2
+                        try:
+                            if month2[j][l] != 0:
+                                if month + 1 in habit_records[habit_key] and month2[j][l] in habit_records[habit_key][month + 1]:
+                                    print(f"[black on white]{month2[j][l]:^3}[/black on white]", end="")
+                                else:
+                                    print(f"{month2[j][l]:^3}", end="")
+                            else:
+                                print(f"{" ":^3}", end="")
+                        except:
+                                print(f"{" ":^3}", end="")
+        
+                    print(end="    ")
+        
+                    for m in range(7): # month 3
+                        try:
+                            if month3[j][m] != 0:
+                                if month + 2 in habit_records[habit_key] and month3[j][m] in habit_records[habit_key][month + 2]:
+                                    print(f"[black on white]{month3[j][m]:^3}[/black on white]", end="")
+                                else:
+                                    print(f"{month3[j][m]:^3}", end="")
+                            else:
+                                print(f"{" ":^3}", end="")
+                        except Exception:
+                                print(f"{" ":^3}", end="")
+        
+                    print()
+        
+        
+                month += 3
+                print("\n\n")
+
+        month = 1        
+        
+    input("Press enter to continue")
+    default_print("\033[2J]\033[3J]\033[H")
 
 
 def delete_lines(n):
@@ -570,6 +661,8 @@ def main_flow():
 
 
     while True:
+
+        delete_lines(1)
         # display decision_numbers
         print("[bold red]█   █  ███  ████  ███ █████ ███  ███   ███[/bold red]")  
         print("[bold red]█   █ █   █ █   █  █    █    █  █     █   █[/bold red]") 
