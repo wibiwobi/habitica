@@ -352,7 +352,7 @@ def output_one_habit_streak(habit_records, bright_colors):
     print("[bold red]█   █ █   █ ████  ███   █   ███  ███  █   █[/bold red]\n")
 
 
-    # check if there are habits to log
+    # prevent the user from inputting anything if the habit_records is empty
     if not habit_records:
         print("There are no habits to display...")
         input("Press \'enter\' to continue..")
@@ -370,12 +370,12 @@ def output_one_habit_streak(habit_records, bright_colors):
 
     print()
 
-    # ask what habit 
+    # ask what habit to display its streak (2026)
     while True:
         try:
             decision_number = Prompt.ask(f"[light_cyan1 bold]Pick a habit streak to display from [0 - {len(key_habit_records_list) - 1}] [/light_cyan1 bold]")
 
-            if decision_number == "x":
+            if decision_number == "x": # exit the function
                 delete_lines(13)
                 return 
             else:
@@ -394,26 +394,32 @@ def output_one_habit_streak(habit_records, bright_colors):
 
     habit_key = key_habit_records_list[decision_number]
 
-    
-
     months = {1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December"}
     days = {1: "Su", 2: "Mo", 3: "Tu", 4: "We", 5: "Th", 6: "Fr", 7: "Sa"}
-    month = 1
-    cal = calendar.Calendar(firstweekday=6)
+    
+    month = 1 # starting index for the month (January)
+    cal = calendar.Calendar(firstweekday=6) # cal object, gives a lot of functions out of the box
 
     print(f"\n\n[bold hot_pink]{habit_key:^70}[/bold hot_pink]")
     print(f"\n{"2026":^70}\n")
 
-    for i in range(4):
+    for i in range(4): # four rows total
+                       # row1 = jan, feb, march 
+                       # row2 = april, may, june
+                       # row3 = july, august, september
+                       # row4 = october, november, december
+
         print(f"{months[month]:^20}{months[month + 1]:^30}{months[month+2]:^20}")
         for i in range(3):
             print(f"{days[1]:^3}{days[2]:^3}{days[3]:^3}{days[4]:^3}{days[5]:^3}{days[6]:^3}{days[7]:^3}", end=f"{"":<4}")
 
         print()
 
-        month1 = cal.monthdayscalendar(2026, month)
-        month2 = cal.monthdayscalendar(2026, month + 1)
-        month3 = cal.monthdayscalendar(2026, month + 2)
+        # month1, month2 and month3's values is a 2d array, each index is an array containing days in one row
+        # [[0, 1, 2, 3], [4, 5, 6, 7]]
+        month1 = cal.monthdayscalendar(2026, month) 
+        month2 = cal.monthdayscalendar(2026, month + 1) 
+        month3 = cal.monthdayscalendar(2026, month + 2) 
 
 
             
@@ -421,7 +427,8 @@ def output_one_habit_streak(habit_records, bright_colors):
             for k in range(7): # month1
                 try:
                     if month1[j][k] != 0:
-                        if month in habit_records[habit_key] and month1[j][k] in habit_records[habit_key][month]:
+                        # highlight the specific date in this month
+                        if month in habit_records[habit_key] and month1[j][k] in habit_records[habit_key][month]: 
                             print(f"[black on white]{month1[j][k]:^3}[/black on white]", end="")
 
                         else:
