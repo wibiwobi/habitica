@@ -163,10 +163,6 @@ from rich.prompt import Prompt
 import calendar
 import random
 
-# TODO: output_all_habits
-# TODO: prompt for output_all habit streak if there are no habits in the dict 
-# TODO: BACK FEATURE -> output_all_habits
-
 # TODO: Document
 # TODO: Refactor (DRY)
 
@@ -185,11 +181,13 @@ def add_habit(habit_records):
             print("[magenta bold]ADD A HABIT TO TRACK IT LATER![/magenta bold]")
             print("To exit the prompt type \"x\" without the double quotes")
             print("\'To add more than one habit separate them by spaces\'\n")
-            habits = str(Prompt.ask("[light_cyan1 bold]Habit(s) [/light_cyan1 bold]")).split() # array man
-            if habits == "": 
+
+            # ask what habit to add (only string, dont accept empty string)
+            habits = str(Prompt.ask("[light_cyan1 bold]Habit(s) [/light_cyan1 bold]")).split()
+            if habits == []: 
                 raise Exception("Input is empty!") 
 
-            elif habits[0] == "x":
+            elif habits[0] == "x": # 
                 delete_lines(11)
                 break
             
