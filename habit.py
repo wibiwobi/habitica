@@ -187,7 +187,7 @@ def add_habit(habit_records):
             if habits == []: 
                 raise Exception("Input is empty!") 
 
-            elif habits[0] == "x": # 
+            elif habits[0] == "x": # exit if the user inputs 'x'
                 delete_lines(11)
                 break
             
@@ -212,7 +212,7 @@ def log_habit(habit_records, bright_colors):
     print("[bold red]█   █ █   █ █   █  █    █    █  █     █   █[/bold red]") 
     print("[bold red]█   █ █   █ ████  ███   █   ███  ███  █   █[/bold red]\n\n")
 
-    # check if there are habits to log
+    # prevent the user from inputting anything if the habit_records is empty
     if not habit_records:
         print("There are no habits to log...")
         input("Press \'enter\' to continue..")
@@ -237,13 +237,13 @@ def log_habit(habit_records, bright_colors):
     while True:
         try:
             decision_number = str(Prompt.ask(f"[light_cyan1 bold]Pick a habit from [0 - {len(key_habit_records_list) - 1}] [/light_cyan1 bold]"))
-            if decision_number == 'x': 
+            if decision_number == 'x': # exit the function
                 delete_lines(13)
                 return 
             else:
                 decision_number = int(decision_number)
 
-            if decision_number < 0 or decision_number > len(key_habit_records_list) - 1:
+            if decision_number < 0 or decision_number > len(key_habit_records_list) - 1: # number does NOT ranges from 0 to the last habit index
                 raise ValueError(f"decision_number is not valid, it should range only from 0 - {len(key_habit_records_list) - 1}")
             else:
                 delete_lines(3 + len(key_habit_records_list))
@@ -253,26 +253,25 @@ def log_habit(habit_records, bright_colors):
             time.sleep(2)
             delete_lines(2)
 
-    
+    # Adding a date to log the habit
     while True:
         try:
             date_decision = input("Manually input date [y/n]? ")
 
-            if date_decision == 'x': 
+            if date_decision == 'x': # exit the function
                 delete_lines(13)
                 return 
 
-            if date_decision == 'y': # manual date (based from user inputs)
+            if date_decision == 'y': # manually input the month and day
                 while True:
                     try:
-                        # get the month
                         month = input("Month [1 - 12]: ")
 
-                        if month == 'x': 
+                        if month == 'x': # exit the function
                             delete_lines(13)
                             return 
                         else:
-                            month = int(month)
+                            month = int(month) 
 
 
                         if month < 1 or month > 12:
@@ -286,12 +285,12 @@ def log_habit(habit_records, bright_colors):
                         delete_lines(2)
 
                 
-                last_day_num = calendar.monthrange(2026, month)[1] # last day of the month
+                total_days_in_month = calendar.monthrange(2026, month)[1] # get the total days in a month
 
                 while True:
                     try:
-                        # get the nth day of the month
-                        day = input(f"Day [1 - {last_day_num}]: ")
+                        # input the nth day of the month
+                        day = input(f"Day [1 - {total_days_in_month}]: ")
 
                         if day == 'x': 
                             delete_lines(13)
@@ -299,7 +298,7 @@ def log_habit(habit_records, bright_colors):
                         else:
                             day = int(day)
 
-                        if day < 1 or day > last_day_num:
+                        if day < 1 or day > total_days_in_month:
                             raise ValueError("Invalid day input")
                         else:
                             delete_lines(1)
@@ -312,10 +311,10 @@ def log_habit(habit_records, bright_colors):
 
                 # log it
                 habit = key_habit_records_list[decision_number]
-                if month in habit_records[habit]:
-                    habit_records[habit][month].add(day)
+                if month in habit_records[habit]: # month is already existing in the dictionary
+                    habit_records[habit][month].add(day) # only add the day 
                 else:
-                    habit_records[habit][month] = {day}
+                    habit_records[habit][month] = {day} # create a month key and add the day inside a dictionary
 
 
                 delete_lines(12)
@@ -327,10 +326,10 @@ def log_habit(habit_records, bright_colors):
                 present_month = datetime.now().month
                 habit = key_habit_records_list[decision_number]
 
-                if present_month in habit_records[habit]:
-                    habit_records[habit][present_month].add(present_day)
+                if present_month in habit_records[habit]: # month is already existing in the dictionary
+                    habit_records[habit][present_month].add(present_day) # only add the day 
                 else:
-                    habit_records[habit][present_month] = {present_day}
+                    habit_records[habit][present_month] = {present_day} # create a month key and add the day inside a dictionary
 
                 delete_lines(10)
                 break
