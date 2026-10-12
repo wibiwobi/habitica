@@ -409,7 +409,10 @@ def output_one_habit_streak(habit_records, bright_colors):
                        # row3 = july, august, september
                        # row4 = october, november, december
 
+        # Output: Ex (Changes overtime, this is just an example format) --> January          February             March
         print(f"{months[month]:^20}{months[month + 1]:^30}{months[month+2]:^20}")
+
+        # Output: Su Mo Tu We Th Fr Sa       Su Mo Tu We Th Fr Sa      Su Mo Tu We Th Fr Sa
         for i in range(3):
             print(f"{days[1]:^3}{days[2]:^3}{days[3]:^3}{days[4]:^3}{days[5]:^3}{days[6]:^3}{days[7]:^3}", end=f"{"":<4}")
 
@@ -422,18 +425,17 @@ def output_one_habit_streak(habit_records, bright_colors):
         month3 = cal.monthdayscalendar(2026, month + 2) 
 
 
-            
-        for j in range(6):
-            for k in range(7): # month1
+        # errors are catched if index is out of bounds, if so then just ignore it and output a space
+        for j in range(6): # six rows of days
+            for k in range(7): # seven days per row
                 try:
                     if month1[j][k] != 0:
-                        # highlight the specific date in this month
+                        # highlight the specific date in this month if month is existing in the habit records and specific day is in a month in habit records
                         if month in habit_records[habit_key] and month1[j][k] in habit_records[habit_key][month]: 
                             print(f"[black on white]{month1[j][k]:^3}[/black on white]", end="")
-
                         else:
                             print(f"{month1[j][k]:^3}", end="")
-                    else:
+                    else: 
                         print(f"{" ":^3}", end="")
                 except:
                     print(f"{"":^3}", end="")
@@ -444,6 +446,7 @@ def output_one_habit_streak(habit_records, bright_colors):
             for l in range(7): # month 2
                 try:
                     if month2[j][l] != 0:
+                        # highlight the specific date in this month if month is existing in the habit records and specific day is in a month in habit records
                         if month + 1 in habit_records[habit_key] and month2[j][l] in habit_records[habit_key][month + 1]:
                             print(f"[black on white]{month2[j][l]:^3}[/black on white]", end="")
                         else:
@@ -458,6 +461,7 @@ def output_one_habit_streak(habit_records, bright_colors):
             for m in range(7): # month 3
                 try:
                     if month3[j][m] != 0:
+                        # highlight the specific date in this month if month is existing in the habit records and specific day is in a month in habit records
                         if month + 2 in habit_records[habit_key] and month3[j][m] in habit_records[habit_key][month + 2]:
                             print(f"[black on white]{month3[j][m]:^3}[/black on white]", end="")
                         else:
@@ -504,7 +508,6 @@ def output_all_habit_streak(habit_records):
     cal = calendar.Calendar(firstweekday=6)
 
 
-    # output all habits
     for habit_key in habit_records:
         print(f"\n\n[bold hot_pink]{habit_key:^70}[/bold hot_pink]")
         for i in range(4):
@@ -526,6 +529,7 @@ def output_all_habit_streak(habit_records):
                     for k in range(7): # month1
                         try:
                             if month1[j][k] != 0:
+                                # highlight the specific date in this month if month is existing in the habit records and specific day is in a month in habit records
                                 if month in habit_records[habit_key] and month1[j][k] in habit_records[habit_key][month]:
                                     print(f"[black on white]{month1[j][k]:^3}[/black on white]", end="")
         
@@ -542,6 +546,7 @@ def output_all_habit_streak(habit_records):
                     for l in range(7): # month 2
                         try:
                             if month2[j][l] != 0:
+                                # highlight the specific date in this month if month is existing in the habit records and specific day is in a month in habit records
                                 if month + 1 in habit_records[habit_key] and month2[j][l] in habit_records[habit_key][month + 1]:
                                     print(f"[black on white]{month2[j][l]:^3}[/black on white]", end="")
                                 else:
@@ -556,6 +561,7 @@ def output_all_habit_streak(habit_records):
                     for m in range(7): # month 3
                         try:
                             if month3[j][m] != 0:
+                                # highlight the specific date in this month if month is existing in the habit records and specific day is in a month in habit records
                                 if month + 2 in habit_records[habit_key] and month3[j][m] in habit_records[habit_key][month + 2]:
                                     print(f"[black on white]{month3[j][m]:^3}[/black on white]", end="")
                                 else:
@@ -638,7 +644,6 @@ def delete_habit(habit_records, bright_colors):
     
 # data
 def main_flow():
-
     bright_colors = [
     "red1",
     "green1",
