@@ -1,157 +1,3 @@
-# Why do i want to build this thing?
-
-
-
-# very simple, to track my habits, why do i want to track my habits?
-# well looking at something that has a streak feels really motivating
-# it's like you know you're trying your best because you see your streak
-
-# this is very simple, what i'll do is first list what it does
-
-
-# what im thinking is like a github type of block
-# each cell is an empty cell the top most header is the month, then below it are
-# cells, each cell indicates the day of the month
-
-# design
-# im thinking of using a library but i don't kow what thouhg
-# i need to extract the current year and month and week using a library
-
-# flow
-
-"""
-screen opens
-
-he will see these decision_numbers
-
-add a habit/task
-log
-see a specific habit streak
-see all log
-
-if he chooses a habit
--> prompt what habit
--> add that habit to data structure (later json)
-
-
-if he chooses log
--> pick what habit (meditating, coding etc)
--> pick date (default is present)
--> then exits that page
-
-
-
-if he chooses see a habit streak
--> pick what habit (meditating, coding etc)
--> logs for a specific habit will show up, with a month hearder below it are the weeks
-and cells are below the weeks, each cell contains either an empty cell or an X inside it
-X marks that the user did that habit for that day "im thinking of putting a color in the cell if it's possible"
-
-if he chooses see all habit streak
--> all streak will be shown in the terminal, with a month hearder below it are the weeks
-and cells are below the weeks, each cell contains either an empty cell or an X inside it
-X marks that the user did that habit for that day
-
-
-ALL HABITS WILL BE SHOWN IN the year 2026
-
-there's a lot of features that can be added in this project but right now this is good
-
-
-"""
-
-
-
-""" 
-TOOLS: 
-rich + datetime/calendar + JSON
-
-"""
-
-
-
-""" 
-DESIGN/FUNCTIONS:
-
-everyhting runs on habit.py
-NEEDS: RICH FOR STYLE
-
-[1] Add a habit
-[2] Log a habit
-[3] See streak of a specific habit
-[4] See all habit streak
-
-EDGECASE: input asks for int, what if string is given?, is the nunmber in the range from 1  to 4
-
-add_habit
-    1. asks what habit
-    2. stores that habit in dictionary (json for later)
-    3. exits automatically
-
-    EDGE CASE: input asks a string -> what if user inputs a number?
-
-log_habit
-    1. displayes all the habits with a number beside the habits 
-    2. user picks one number
-    3. asks to log it with the current date or custom date
-        4,1. if custom date user is asked a specific month and day
-        4.2 if current then it uses the current date
-    5. adds those log data in a dictionary
-    6. exits automatically
-    EDGE CASE: input asks a number, what if user inputs a string?, is the asked date a valid date? like is it in the 
-    range of 1 to 31 or 30 or 29 depending on the month?
-
-
-- need to think about tyhe spacing, lets just agree to two spacing between each month
-- the rows? 5 rows, 7 columns
-output_one_habit_streak
-    1. displayes all the habits with a number beside the habits 
-    2. user picks one number
-    3. full year strea for that habit will be shown
-    4. prompts press eny key to exit
-    5. exits if any keys are pressed
-
-    EDECASE: is the nunmber in the range from 1  to n? depends how many habits are there
-
-output_all_habit_streak
-    3. full year streak for all the habits will be shown
-    4. prompts press eny key to exit
-    5. exits if any keys are pressed
-"""
-
-""" 
-DATA STRUCTURE
-
-- using a dictionary
-{habit : {month:[3, 2, 4] , month: [4, 2]}}
-
-sample
-{coding: {3: [3, 4, 1, 2], 8: {}}, meditating: {september: {}}}
-
-outer part is the habit - string
-inner part is the month - integer
-each month has an integer value, the day - integer
-
-3 = march
-8 = october
-1 = january
-
-you get the point
-"""
-
-
-
-
-
-
-""" 
-Order to building it:
-- setup my functions and flow for add_habit
-- understand how rich works -> user console.print()
-- understand how to get the current year, month, and day using a library called date/time?
-- build the first flow, main and habit
-"""
-
 # ! ADD A BACK FEATURE
 
 default_print = print
@@ -162,14 +8,33 @@ import sys
 from rich.prompt import Prompt
 import calendar
 import random
-
-# TODO: Document
-# TODO: Refactor (DRY)
+import json
 
 # TODO: JSON FEATURE
+    # ADD - add habit and log function
+    # DELETE - delete habit function
+    # READING - output one and output all habit streak funtion
 
 
-def add_habit(habit_records):
+    # adding data to .json
+    # deleting some data in .json
+    # reading values in .json
+
+def add_all_habits_to_json(habits):
+    # load all the data from habit_data.json
+    # perform read and write of habit_data.json
+    with open("Routine/habit_data.json", "r+") as file:
+        habit_data = json.load(file)
+
+        for habit in habits:
+            habit_data[habit] = {}
+
+        file.seek(0)
+        json.dump(habit_data, file, indent=2)
+
+            
+
+def add_habit():
     print("[bold red]█   █  ███  ████  ███ █████ ███  ███   ███[/bold red]")  
     print("[bold red]█   █ █   █ █   █  █    █    █  █     █   █[/bold red]") 
     print("[bold red]█████ █████ ████   █    █    █  █     █████[/bold red]") 
@@ -192,8 +57,7 @@ def add_habit(habit_records):
                 break
             
             else: # add the habit
-                for habit in habits:
-                    habit_records[habit] = {}
+                add_all_habits_to_json(habits)
                 delete_lines(11)
                 break
         except:
@@ -425,7 +289,7 @@ def output_one_habit_streak(habit_records, bright_colors):
         month3 = cal.monthdayscalendar(2026, month + 2) 
 
 
-        # errors are catched if index is out of bounds, if so then just ignore it and output a space
+        # errors are catched if index is out of bounds, if it happens then just ignore it and output a space
         for j in range(6): # six rows of days
             for k in range(7): # seven days per row
                 try:
@@ -511,22 +375,23 @@ def output_all_habit_streak(habit_records):
     for habit_key in habit_records:
         print(f"\n\n[bold hot_pink]{habit_key:^70}[/bold hot_pink]")
         for i in range(4):
-                # display months 1 to 3, 4 to 6 etc
+                # Output: Ex (Changes overtime, this is just an example format) --> January          February             March
                 print(f"{months[month]:^20}{months[month + 1]:^30}{months[month+2]:^20}")
-                # display Su Tu, We to Sa three times
+                # Output: Su Mo Tu We Th Fr Sa       Su Mo Tu We Th Fr Sa      Su Mo Tu We Th Fr Sa
                 for i in range(3):
                     print(f"{days[1]:^3}{days[2]:^3}{days[3]:^3}{days[4]:^3}{days[5]:^3}{days[6]:^3}{days[7]:^3}", end=f"{"":<4}")
         
                 print()
 
-                # matrix of all the dates for a specific month
+                # month1, month2 and month3's values is a 2d array, each index is an array containing days in one row
+                # [[0, 1, 2, 3], [4, 5, 6, 7]]
                 month1 = cal.monthdayscalendar(2026, month)
                 month2 = cal.monthdayscalendar(2026, month + 1)
                 month3 = cal.monthdayscalendar(2026, month + 2)
-        
-                for j in range(6):
 
-                    for k in range(7): # month1
+                # errors are catched if index is out of bounds, if it happens just ignore it and output a space
+                for j in range(6): # six rows of days
+                    for k in range(7): # seven days in one row
                         try:
                             if month1[j][k] != 0:
                                 # highlight the specific date in this month if month is existing in the habit records and specific day is in a month in habit records
@@ -582,13 +447,14 @@ def output_all_habit_streak(habit_records):
     input("Press enter to continue")
     default_print("\033[2J]\033[3J]\033[H")
 
-
+# deletes lines in the terminal n number of times
 def delete_lines(n):
-    if n < 1: print("n should be greater than 0!")
+    if n < 1: print("n should be greater than 0!") # TODO: Error handling
     else:
         for i in range(n):
             sys.stdout.write("\033[1A") # move cursor up
             sys.stdout.write("\x1b[2K") # delete line
+
 
 def delete_habit(habit_records, bright_colors):
     print("[bold red]█   █  ███  ████  ███ █████ ███  ███   ███[/bold red]")  
@@ -642,8 +508,10 @@ def delete_habit(habit_records, bright_colors):
 
     delete_lines(9)
     
-# data
+# starting point of the program
 def main_flow():
+
+    # colors used to highlight text
     bright_colors = [
     "red1",
     "green1",
@@ -666,6 +534,8 @@ def main_flow():
     "violet",
     "medium_orchid1",
     ]
+
+    # all habit data
     habit_records = {"meditating": {9: {4, 5, 6, 29, 28, 27, 26, 25, 23, 22, 21, 19, 12, 11, 10, 9, 6}}}
 
 
@@ -685,6 +555,7 @@ def main_flow():
         print("[bold magenta][3][/bold magenta] [bold bright_white]See all habit streak[/bold bright_white]")
         print("[bold yellow][4][/bold yellow] [bold bright_white]Delete a habit[/bold bright_white]\n")
 
+        # ask what feature to use
         while True:
             try:
                 decision_number = int(Prompt.ask("[light_cyan1 bold]What do you want to do? [0 - 4] [/light_cyan1 bold]"))
@@ -699,7 +570,7 @@ def main_flow():
                 delete_lines(2)
 
         if decision_number == 0:
-            add_habit(habit_records)
+            add_habit()
         elif decision_number == 1:
             log_habit(habit_records, bright_colors)
         elif decision_number == 2:
@@ -710,17 +581,10 @@ def main_flow():
             delete_habit(habit_records, bright_colors)
 
 
-        # check if input is correct -> if it is asks again
-
-        # check what decision_number used 
-            # add_habit decision_number -> passes dictionary date
 
 main_flow()
 
 
-
-
-# ! https://claude.ai/share/fbd82ae4-354c-4636-b4bc-e0b53b720fbd
 
 
 
