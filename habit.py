@@ -23,7 +23,7 @@ import json
 def add_all_habits_to_json(habits):
     # load all the data from habit_data.json
     # perform read and write of habit_data.json
-    with open("Routine/habit_data.json", "r+") as file:
+    with open("habit_data.json", "r+") as file:
         habit_data = json.load(file)
 
         for habit in habits:
@@ -60,7 +60,8 @@ def add_habit():
                 add_all_habits_to_json(habits)
                 delete_lines(11)
                 break
-        except:
+        except Exception as e:
+            print(e)
             print("Input is [magenta bold]EMPTY![/magenta bold]")
             time.sleep(2)
             delete_lines(6)
