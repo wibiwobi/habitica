@@ -14,7 +14,7 @@ import json
     # ADD - add habit and log function
     # DELETE - delete habit function
     # READING - output one and output all habit streak funtion
-
+    # DISPLAY - output all habits -> 
 
     # adding data to .json
     # deleting some data in .json
@@ -32,7 +32,20 @@ def add_all_habits_to_json(habits):
         file.seek(0)
         json.dump(habit_data, file, indent=2)
 
-            
+def log_streak_to_json(habit_key, month, day):
+    with open("habit_data.json") as file:
+        habit_data = json.load(file)
+
+        if month in habit_data[habit_key]: # month is already existing in the dictionary
+            habit_data[habit_key][month].add(day) # only add the day 
+        else:
+            habit_data[habit_key][month] = {day} # create a month key and add the day inside a dictionary
+
+        file.seek(0)
+        json.dump(habit_data, file, indent=2)
+
+
+ 
 
 def add_habit():
     print("[bold red]█   █  ███  ████  ███ █████ ███  ███   ███[/bold red]")  
@@ -175,27 +188,17 @@ def log_habit(habit_records, bright_colors):
                 
 
                 # log it
-                habit = key_habit_records_list[decision_number]
-                if month in habit_records[habit]: # month is already existing in the dictionary
-                    habit_records[habit][month].add(day) # only add the day 
-                else:
-                    habit_records[habit][month] = {day} # create a month key and add the day inside a dictionary
-
-
+                habit_key = key_habit_records_list[decision_number]
+                log_streak_to_json(habit_key, month, day)
                 delete_lines(12)
                 break
 
-                    
+                   
             elif date_decision == 'n': # automatic date (current date)
                 present_day = datetime.now().day
                 present_month = datetime.now().month
-                habit = key_habit_records_list[decision_number]
-
-                if present_month in habit_records[habit]: # month is already existing in the dictionary
-                    habit_records[habit][present_month].add(present_day) # only add the day 
-                else:
-                    habit_records[habit][present_month] = {present_day} # create a month key and add the day inside a dictionary
-
+                habit_key = key_habit_records_list[decision_number]
+                log_streak_to_json(habit_key, present_month, present_day)
                 delete_lines(10)
                 break
             else:
