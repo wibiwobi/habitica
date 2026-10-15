@@ -11,39 +11,49 @@ import random
 import json
 
 # TODO: JSON FEATURE
-    # ADD - add habit and log function
+    # ? Problems
+        # log_habit
+            # inputting the day
+            # inputting an 'n' char 
+
+    # DISPLAY - output all habits for log_habit, output_one...streak, delete_habit
     # DELETE - delete habit function
     # READING - output one and output all habit streak funtion
-    # DISPLAY - output all habits -> 
-
-    # adding data to .json
-    # deleting some data in .json
-    # reading values in .json
 
 def add_all_habits_to_json(habits):
-    # load all the data from habit_data.json
-    # perform read and write of habit_data.json
-    with open("habit_data.json", "r+") as file:
-        habit_data = json.load(file)
+    try:
+        # load all the data from habit_data.json
+        # perform read and write of habit_data.json
+        with open("habit_data.json", "r+") as file:
+            habit_data = json.load(file)
 
-        for habit in habits:
-            habit_data[habit] = {}
+            for habit in habits:
+                habit_data[habit] = {}
 
-        file.seek(0)
-        json.dump(habit_data, file, indent=2)
+            file.seek(0)
+            json.dump(habit_data, file, indent=2)
+    except Exception as e:
+        print(e)
 
 def log_streak_to_json(habit_key, month, day):
-    with open("habit_data.json") as file:
-        habit_data = json.load(file)
+    # all keys in json when fetched are all strings
+    habit_key = str(habit_key)
+    month = str(month)
 
-        if month in habit_data[habit_key]: # month is already existing in the dictionary
-            habit_data[habit_key][month].add(day) # only add the day 
-        else:
-            habit_data[habit_key][month] = {day} # create a month key and add the day inside a dictionary
+    try:    
+        with open("habit_data.json", "r+") as file:
+            habit_data = json.load(file)
 
-        file.seek(0)
-        json.dump(habit_data, file, indent=2)
+            if month in habit_data[habit_key] and day not in habit_data[habit_key][month]: # month is already existing in the dictionary
+                habit_data[habit_key][month].append(day) # only add the day 
+            elif month not in habit_data[habit_key]:
+                habit_data[habit_key][month] = [day] # create a month key and add the day inside a dictionary
 
+            file.seek(0)
+            json.dump(habit_data, file, indent=2)
+
+    except Exception as e:
+        print(e)
 
  
 
@@ -80,7 +90,6 @@ def add_habit():
             delete_lines(6)
 
 
-
 def log_habit(habit_records, bright_colors): 
     from datetime import datetime
     
@@ -95,9 +104,7 @@ def log_habit(habit_records, bright_colors):
         print("There are no habits to log...")
         input("Press \'enter\' to continue..")
         delete_lines(9)
-
         return
-
 
     print("type \'x\' if you want to exit\n")
 
@@ -204,8 +211,7 @@ def log_habit(habit_records, bright_colors):
             else:
                 raise ValueError("date decision should be either a y/n")
             
-
-        except:
+        except Exception as e:
             print("Input should either be a [bold blue]y[/bold blue] or [bold red]n[/bold red]!")
             time.sleep(2)
             delete_lines(2)
@@ -540,7 +546,7 @@ def main_flow():
     ]
 
     # all habit data
-    habit_records = {"meditating": {9: {4, 5, 6, 29, 28, 27, 26, 25, 23, 22, 21, 19, 12, 11, 10, 9, 6}}}
+    habit_records = {"meditating": {9: {4, 5, 6, 29, 28, 27, 26, 25, 23, 22, 21, 19, 12, 11, 10, 9, 6}}, "s": {}}
 
 
     while True:
