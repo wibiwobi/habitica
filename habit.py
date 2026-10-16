@@ -11,11 +11,6 @@ import random
 import json
 
 # TODO: JSON FEATURE
-    # ? Problems
-        # log_habit
-            # inputting the day
-            # inputting an 'n' char 
-
     # DISPLAY - output all habits for log_habit, output_one...streak, delete_habit
     # DELETE - delete habit function
     # READING - output one and output all habit streak funtion
@@ -54,6 +49,29 @@ def log_streak_to_json(habit_key, month, day):
 
     except Exception as e:
         print(e)
+
+
+def display_all_habits(bright_colors):
+    with open("habit_data.json", "r") as file:
+        habit_records = json.load(file)
+
+    print("[bold bright_blue]Habit(s):[/bold bright_blue]")
+    for i, habit in enumerate(habit_records):
+        bright_color = random.choice(bright_colors)
+        print(f"[{bright_color}][{i}] {habit}[/{bright_color}]")
+    print()
+
+def fetch_all_habit_keys():
+    with open("habit_data.json", "r") as file:
+        habit_records = json.load(file)
+
+    key_habit_records_list = []
+    for i, habit in enumerate(habit_records):
+        key_habit_records_list.append(habit)
+
+    return key_habit_records_list
+
+    
 
  
 
@@ -107,16 +125,10 @@ def log_habit(habit_records, bright_colors):
         return
 
     print("type \'x\' if you want to exit\n")
+  
+    key_habit_records_list = fetch_all_habit_keys()
+    display_all_habits(bright_colors)
 
-    # display all the habits
-    print("[bold bright_blue]Habit(s):[/bold bright_blue]")
-    key_habit_records_list = []
-    for i, habit in enumerate(habit_records):
-        key_habit_records_list.append(habit)
-        bright_color = random.choice(bright_colors)
-        print(f"[{bright_color}][{i}] {habit}[/{bright_color}]")
-
-    print()
 
     # ask what habit to log
     while True:
@@ -199,7 +211,6 @@ def log_habit(habit_records, bright_colors):
                 log_streak_to_json(habit_key, month, day)
                 delete_lines(12)
                 break
-
                    
             elif date_decision == 'n': # automatic date (current date)
                 present_day = datetime.now().day
@@ -218,13 +229,14 @@ def log_habit(habit_records, bright_colors):
     
 
 
-def output_one_habit_streak(habit_records, bright_colors):
+def output_one_habit_streak(bright_colors):
     print("[bold red]█   █  ███  ████  ███ █████ ███  ███   ███[/bold red]")  
     print("[bold red]█   █ █   █ █   █  █    █    █  █     █   █[/bold red]") 
     print("[bold red]█████ █████ ████   █    █    █  █     █████[/bold red]") 
     print("[bold red]█   █ █   █ █   █  █    █    █  █     █   █[/bold red]") 
     print("[bold red]█   █ █   █ ████  ███   █   ███  ███  █   █[/bold red]\n")
 
+    habit_records = fetch_all_habit_data()
 
     # prevent the user from inputting anything if the habit_records is empty
     if not habit_records:
@@ -234,15 +246,8 @@ def output_one_habit_streak(habit_records, bright_colors):
     
         return
 
-    # display all the habits
-    print("[bold bright_blue]Habit(s):[/bold bright_blue]")
-    key_habit_records_list = []
-    for i, habit in enumerate(habit_records):
-        key_habit_records_list.append(habit)
-        bright_color = random.choice(bright_colors)
-        print(f"[{bright_color}][{i}] {habit}[/{bright_color}]")
-
-    print()
+    key_habit_records_list = fetch_all_habit_keys()
+    display_all_habits(bright_colors)
 
     # ask what habit to display its streak (2026)
     while True:
@@ -482,15 +487,8 @@ def delete_habit(habit_records, bright_colors):
 
     print("Delete a habit.\n\n")
 
-    # display the habits
-    print("[bold bright_blue]Habit(s):[/bold bright_blue]")
-    key_habit_records_list = []
-    for i, habit in enumerate(habit_records):
-        key_habit_records_list.append(habit)
-        bright_color = random.choice(bright_colors)
-        print(f"[{bright_color}][{i}] {habit}[/{bright_color}]")
-    
-    print()
+    key_habit_records_list = fetch_all_habit_keys()
+    display_all_habits(bright_colors)
 
     # ask what habit to delete
     while True:
