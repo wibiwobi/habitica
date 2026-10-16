@@ -50,11 +50,15 @@ def log_streak_to_json(habit_key, month, day):
     except Exception as e:
         print(e)
 
-
-def display_all_habits(bright_colors):
+def fetch_all_habit_data():
     with open("habit_data.json", "r") as file:
         habit_records = json.load(file)
+    return habit_records
 
+
+def display_all_habits(bright_colors):
+    habit_records = fetch_all_habit_data()
+    
     print("[bold bright_blue]Habit(s):[/bold bright_blue]")
     for i, habit in enumerate(habit_records):
         bright_color = random.choice(bright_colors)
@@ -62,9 +66,8 @@ def display_all_habits(bright_colors):
     print()
 
 def fetch_all_habit_keys():
-    with open("habit_data.json", "r") as file:
-        habit_records = json.load(file)
-
+    habit_records = fetch_all_habit_data()
+    
     key_habit_records_list = []
     for i, habit in enumerate(habit_records):
         key_habit_records_list.append(habit)
@@ -362,13 +365,14 @@ def output_one_habit_streak(bright_colors):
     return
 
 
-def output_all_habit_streak(habit_records):
+def output_all_habit_streak():
     print("[bold red]█   █  ███  ████  ███ █████ ███  ███   ███[/bold red]")  
     print("[bold red]█   █ █   █ █   █  █    █    █  █     █   █[/bold red]") 
     print("[bold red]█████ █████ ████   █    █    █  █     █████[/bold red]") 
     print("[bold red]█   █ █   █ █   █  █    █    █  █     █   █[/bold red]") 
     print("[bold red]█   █ █   █ ████  ███   █   ███  ███  █   █[/bold red]\n")
 
+    habit_records = fetch_all_habit_data()
 
     # check if there are habits to log
     if not habit_records:
