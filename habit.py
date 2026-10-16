@@ -481,7 +481,7 @@ def delete_habit(bright_colors):
     print("[bold red]█████ █████ ████   █    █    █  █     █████[/bold red]") 
     print("[bold red]█   █ █   █ █   █  █    █    █  █     █   █[/bold red]") 
     print("[bold red]█   █ █   █ ████  ███   █   ███  ███  █   █[/bold red]\n")
-    
+
     habit_records = fetch_all_habit_data()
 
     # check if there are habits to log
@@ -519,6 +519,9 @@ def delete_habit(bright_colors):
 
     # delete habit
     del habit_records[key_habit_records_list[decision_number]]
+
+    with open("habit_data.json", "w") as file:
+        json.dump(habit_records, file, indent=2)
 
     delete_lines(9)
     
