@@ -475,12 +475,14 @@ def delete_lines(n):
             sys.stdout.write("\x1b[2K") # delete line
 
 
-def delete_habit(habit_records, bright_colors):
+def delete_habit(bright_colors):
     print("[bold red]█   █  ███  ████  ███ █████ ███  ███   ███[/bold red]")  
     print("[bold red]█   █ █   █ █   █  █    █    █  █     █   █[/bold red]") 
     print("[bold red]█████ █████ ████   █    █    █  █     █████[/bold red]") 
     print("[bold red]█   █ █   █ █   █  █    █    █  █     █   █[/bold red]") 
     print("[bold red]█   █ █   █ ████  ███   █   ███  ███  █   █[/bold red]\n")
+    
+    habit_records = fetch_all_habit_data()
 
     # check if there are habits to log
     if not habit_records:
@@ -547,10 +549,6 @@ def main_flow():
     "medium_orchid1",
     ]
 
-    # all habit data
-    habit_records = {"meditating": {9: {4, 5, 6, 29, 28, 27, 26, 25, 23, 22, 21, 19, 12, 11, 10, 9, 6}}, "s": {}}
-
-
     while True:
 
         delete_lines(1)
@@ -584,13 +582,13 @@ def main_flow():
         if decision_number == 0:
             add_habit()
         elif decision_number == 1:
-            log_habit(habit_records, bright_colors)
+            log_habit(bright_colors)
         elif decision_number == 2:
-            output_one_habit_streak(habit_records, bright_colors)
+            output_one_habit_streak(bright_colors)
         elif decision_number == 3:
-            output_all_habit_streak(habit_records)   
+            output_all_habit_streak()   
         elif  decision_number == 4:
-            delete_habit(habit_records, bright_colors)
+            delete_habit(bright_colors)
 
 
 
