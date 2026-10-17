@@ -314,13 +314,13 @@ def output_one_habit_streak(bright_colors):
                 try:
                     if month1[j][k] != 0:
                         if str(month) in habit_records[habit_key] and month1[j][k] in habit_records[habit_key][str(month)]: 
-                            print(f"[black on white]{month1[j][k]:^3}[/black on white]", end="")
+                            print(f"[black on white]{month1[j][k]:^2}[/black on white]", end=" ")
                         else:
                             print(f"{month1[j][k]:^3}", end="")
                     else: 
-                        print(f"{"":^3}", end="")
+                        print(f"{" ":^3}", end="")
                 except:
-                    print(f"{"":^3}", end="")
+                    print(f"{" ":^3}", end="")
 
 
             print(end="    ")
