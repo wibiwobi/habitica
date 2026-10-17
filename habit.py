@@ -12,7 +12,6 @@ import json
 
 # TODO: JSON FEATURE
     # DISPLAY - output all habits for log_habit, output_one...streak, delete_habit
-    # DELETE - delete habit function
     # READING - output one and output all habit streak funtion
 
 def add_all_habits_to_json(habits):
@@ -104,14 +103,13 @@ def add_habit():
                 add_all_habits_to_json(habits)
                 delete_lines(11)
                 break
-        except Exception as e:
-            print(e)
+        except:
             print("Input is [magenta bold]EMPTY![/magenta bold]")
             time.sleep(2)
             delete_lines(6)
 
 
-def log_habit(habit_records, bright_colors): 
+def log_habit(bright_colors): 
     from datetime import datetime
     
     print("[bold red]█   █  ███  ████  ███ █████ ███  ███   ███[/bold red]")  
@@ -120,11 +118,13 @@ def log_habit(habit_records, bright_colors):
     print("[bold red]█   █ █   █ █   █  █    █    █  █     █   █[/bold red]") 
     print("[bold red]█   █ █   █ ████  ███   █   ███  ███  █   █[/bold red]\n\n")
 
+    habit_records = fetch_all_habit_data()
+
     # prevent the user from inputting anything if the habit_records is empty
     if not habit_records:
         print("There are no habits to log...")
         input("Press \'enter\' to continue..")
-        delete_lines(9)
+        default_print("\033[2J]\033[3J]\033[H")
         return
 
     print("type \'x\' if you want to exit\n")
@@ -138,7 +138,7 @@ def log_habit(habit_records, bright_colors):
         try:
             decision_number = str(Prompt.ask(f"[light_cyan1 bold]Pick a habit from [0 - {len(key_habit_records_list) - 1}] [/light_cyan1 bold]"))
             if decision_number == 'x': # exit the function
-                delete_lines(13)
+                default_print("\033[2J]\033[3J]\033[H")
                 return 
             else:
                 decision_number = int(decision_number)
@@ -159,7 +159,7 @@ def log_habit(habit_records, bright_colors):
             date_decision = input("Manually input date [y/n]? ")
 
             if date_decision == 'x': # exit the function
-                delete_lines(13)
+                default_print("\033[2J]\033[3J]\033[H")
                 return 
 
             if date_decision == 'y': # manually input the month and day
@@ -168,7 +168,7 @@ def log_habit(habit_records, bright_colors):
                         month = input("Month [1 - 12]: ")
 
                         if month == 'x': # exit the function
-                            delete_lines(13)
+                            default_print("\033[2J]\033[3J]\033[H")
                             return 
                         else:
                             month = int(month) 
@@ -193,7 +193,7 @@ def log_habit(habit_records, bright_colors):
                         day = input(f"Day [1 - {total_days_in_month}]: ")
 
                         if day == 'x': 
-                            delete_lines(13)
+                            default_print("\033[2J]\033[3J]\033[H")
                             return 
                         else:
                             day = int(day)
@@ -245,7 +245,7 @@ def output_one_habit_streak(bright_colors):
     if not habit_records:
         print("There are no habits to display...")
         input("Press \'enter\' to continue..")
-        delete_lines(9)
+        default_print("\033[2J]\033[3J]\033[H")
     
         return
 
@@ -258,7 +258,7 @@ def output_one_habit_streak(bright_colors):
             decision_number = Prompt.ask(f"[light_cyan1 bold]Pick a habit streak to display from [0 - {len(key_habit_records_list) - 1}] [/light_cyan1 bold]")
 
             if decision_number == "x": # exit the function
-                delete_lines(13)
+                default_print("\033[2J]\033[3J]\033[H")
                 return 
             else:
                 decision_number = int(decision_number)
@@ -378,7 +378,7 @@ def output_all_habit_streak():
     if not habit_records:
         print("There are no habits to display...")
         input("Press \'enter\' to continue..")
-        delete_lines(9)
+        default_print("\033[2J]\033[3J]\033[H")
     
         return
 
@@ -488,7 +488,7 @@ def delete_habit(bright_colors):
     if not habit_records:
         print("There are no habits to delete...")
         input("Press \'enter\' to continue..")
-        delete_lines(9)
+        default_print("\033[2J]\033[3J]\033[H")
         return
 
     print("Delete a habit.\n\n")
@@ -501,7 +501,7 @@ def delete_habit(bright_colors):
             try:
                 decision_number = str(Prompt.ask(f"[light_cyan1 bold]Pick a habit to [bold red]delete[/bold red] from [0 - {len(key_habit_records_list) - 1}] [/light_cyan1 bold]"))
                 if decision_number == 'x': 
-                    delete_lines(13)
+                    default_print("\033[2J]\033[3J]\033[H")
                     return 
                 else:
                     decision_number = int(decision_number)
