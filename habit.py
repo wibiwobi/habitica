@@ -416,7 +416,7 @@ def output_all_habit_streak():
                             if month1[j][k] != 0:
                                 # highlight the specific date in this month if month is existing in the habit records and specific day is in a month in habit records
                                 if str(month) in habit_records[habit_key] and month1[j][k] in habit_records[habit_key][str(month)]:
-                                    print(f"[black on white]{month1[j][k]:^3}[/black on white]", end="")
+                                    print(f"[black on white]{month1[j][k]:^2}[/black on white]", end=" ")
         
                                 else:
                                     print(f"{month1[j][k]:^3}", end="")
@@ -433,7 +433,7 @@ def output_all_habit_streak():
                             if month2[j][l] != 0:
                                 # highlight the specific date in this month if month is existing in the habit records and specific day is in a month in habit records
                                 if str(month + 1) in habit_records[habit_key] and month2[j][l] in habit_records[habit_key][str(month + 1)]:
-                                    print(f"[black on white]{month2[j][l]:^3}[/black on white]", end="")
+                                    print(f"[black on white]{month2[j][l]:^2}[/black on white]", end=" ")
                                 else:
                                     print(f"{month2[j][l]:^3}", end="")
                             else:
@@ -448,7 +448,7 @@ def output_all_habit_streak():
                             if month3[j][m] != 0:
                                 # highlight the specific date in this month if month is existing in the habit records and specific day is in a month in habit records
                                 if str(month + 2) in habit_records[habit_key] and month3[j][m] in habit_records[habit_key][str(month + 2)]:
-                                    print(f"[black on white]{month3[j][m]:^3}[/black on white]", end="")
+                                    print(f"[black on white]{month3[j][m]:^2}[/black on white]", end=" ")
                                 else:
                                     print(f"{month3[j][m]:^3}", end="")
                             else:
